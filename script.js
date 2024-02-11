@@ -2,7 +2,7 @@ const canvas = document.getElementById("canvas")
 const context = canvas.getContext("2d")
 const scoreEl = document.getElementById("score")
 
-canvas.width = window.innerWidth - 40
+canvas.width = 20 * 30
 canvas.height = window.innerHeight - 65
 // rectangle(0,0,canvas.width,canvas.height,"blue")
 // rectangle(50,50,canvas.width-50,canvas.height-50,"blue")
@@ -192,7 +192,7 @@ const map = [
     ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
     ['-','.','.','.','.','.','.','-',' ',' ',' ','-','.','.','.','.','.','.','-'],
     ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
-    ['-','.','.','-','.','-','.','.','.','.','.','.','.','-','.','-','.','.','-'],
+    ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
     ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
     ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
     ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
@@ -349,8 +349,8 @@ function animate(){
                 ghost.chaser = true
                 number_of_ghosts += 1
                 ghost.position = {
-                    x: Boundary.width * 10 + Boundary.width / 2,
-                    y: Boundary.height * 20 + Boundary.height / 2
+                    x: Boundary.width * 14 + Boundary.width / 2,
+                    y: Boundary.height * 10 + Boundary.height / 2
                 }
                 // ghosts.splice(i, 1)
                 // score += 100

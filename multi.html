@@ -8,27 +8,32 @@
       body {
         margin: 0;
         background-color: black;
-        padding: 10px 20px;
+        padding: 10px auto;
       }
       canvas {
-        border: 1px solid white;
+        display: block;
+        background-color: black;
+        margin: auto;
       }
     </style>
     <title>Pac-man</title>
   </head>
   <body>
-    <canvas id="canvas" width="400" height="400"></canvas>
     <p
       style="
         color: white;
         font-family: sans-serif;
         font-size: 14px;
         margin-bottom: 6px;
+        text-align: center;
       "
     >
-      <span>Player 1: </span><span id="player1">0</span>
-      <span>Player 2: </span><span id="player2">0</span>
+      <span>YELLOW </span><span id="player1">0</span>
+      <span style="width: 200px"> - </span>
+      <span id="player2">0</span>
+      <span>PURPLE </span>
     </p>
+    <canvas id="canvas" width="400" height="400"></canvas>
     <script src="pacman.js"></script>
   </body>
 </html>
