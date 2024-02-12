@@ -111,41 +111,12 @@ class PowerUp {
 const pellets = []
 const boundaries = []
 const powerUps = []
-const ghosts = [
-    new Ghost({
-        position:{
-            x: Boundary.width * 6 + Boundary.width / 2,
-            y: Boundary.height + Boundary.height / 2
-        },
-        velocity:{
-            x: Ghost.speed,
-            y: 0
-        },
-        color: "green"
-    } ),
-    new Ghost({
-        position:{
-            x: Boundary.width * 6 + Boundary.width / 2,
-            y: Boundary.height * 6 + Boundary.height / 2
-        },
-        velocity:{
-            x: Ghost.speed,
-            y: 0
-        },
-        color: "green"
-    } ),
-    new Ghost({
-        position:{
-            x: Boundary.width * 6 + Boundary.width / 2,
-            y: Boundary.height * 8 + Boundary.height / 2
-        },
-        velocity:{
-            x: Ghost.speed,
-            y: 0
-        },
-        color: "green"
-    } ),
-    new Ghost({
+const ghosts = []
+
+let number_of_ghosts = 5
+
+for(let i = 0; i < number_of_ghosts; i++){
+    ghosts.push(new Ghost({
         position:{
             x: Boundary.width * 6 + Boundary.width / 2,
             y: Boundary.height * 20 + Boundary.height / 2
@@ -155,8 +126,9 @@ const ghosts = [
             y: 0
         },
         color: "green"
-    } )
-]
+    } ))
+}
+
 const pacman = new Pacman({
     position:{
         x: Boundary.width + Boundary.width / 2,
@@ -177,7 +149,6 @@ const keys = {
 
 let lastKey = ''
 let score = 0
-let number_of_ghosts = 0
 
 const map = [
     ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
@@ -347,7 +318,7 @@ function animate(){
         ) {
             if (ghost.chaser == false){
                 ghost.chaser = true
-                number_of_ghosts += 1
+                number_of_ghosts -= 1
                 ghost.position = {
                     x: Boundary.width * 14 + Boundary.width / 2,
                     y: Boundary.height * 10 + Boundary.height / 2
@@ -393,7 +364,7 @@ function animate(){
 
         if(Math.hypot(
             pellet.position.x - pacman.position.x,
-            pellet.position.y - pacman.position.y) < pacman.radius + pellet.radius && number_of_ghosts == 4){
+            pellet.position.y - pacman.position.y) < pacman.radius + pellet.radius && number_of_ghosts <= 0){
             pellets.splice(i, 1)
             score += 10
             scoreEl.innerText = score
