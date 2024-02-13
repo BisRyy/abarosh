@@ -547,16 +547,20 @@ function handleGameKeyDown(event) {
       break;
     case "p":
     case "P":
-    case "Escape":
       cancelAnimationFrame(animationId);
+      break;
+    case "Escape":
+      drawMainMenu();
       break;
     case "Enter":
     case "r":
     case "R":
-      if (over){
+      if (over) {
         window.location.href = "./single.html";
-      } else {cancelAnimationFrame(animationId);
-      animate();}
+      } else {
+        cancelAnimationFrame(animationId);
+        animate();
+      }
       break;
     case "N":
     case "n":
@@ -646,34 +650,55 @@ function quitGame() {
     if (confirm("Are you sure you want to quit?")) {
       window.location.href = "./index.html";
     }
+  } else {
+    window.location.href = "./index.html";
   }
 }
 
 function gameOver() {
-    cancelAnimationFrame(animationId);
-    requestAnimationFrame(gameOver);
+  cancelAnimationFrame(animationId);
+  requestAnimationFrame(gameOver);
 
-    context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
-    context.fillStyle = "#fff";
-    context.font = "30px Arial";
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
 
-    const menuOptions = ["Game Over", "R - Restart", "Q - Quit"];
+  const menuOptions = ["Game Over", "R - Restart", "Q - Quit"];
 
-    menuOptions.forEach((option, index) => {
-        if (index === selectedOption) {
-        context.fillStyle = "#ff0";
-        } else {
-        context.fillStyle = "#fff";
-        }
-        context.fillText(
-        option,
-        canvas.width / 2 - 80,
-        canvas.height / 2 + index * 50 - 40
-        );
-    });
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "#ff0";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 80,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
 }
 
 function gameWon() {
-  alert("You won!");
-  window.location.href = "./index.html";
+  cancelAnimationFrame(animationId);
+  requestAnimationFrame(gameWon);
+
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+
+  const menuOptions = ["You Win", "R - Restart", "Q - Quit"];
+
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "#ff0";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 80,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
 }
