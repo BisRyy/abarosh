@@ -4,11 +4,9 @@ const player1scoreEl = document.getElementById("player1");
 const player2scoreEl = document.getElementById("player2");
 
 canvas.width = 20 * 30;
-canvas.height = 22 * 30 + 25;
+canvas.height = window.innerHeight - 65;
 
-// random number 1 - 6
 const random = Math.floor(Math.random() * 6) + 1;
-// add background music {random}.mp3
 var audio = new Audio(
   "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
 );
@@ -27,7 +25,7 @@ class Boundary {
   }
 }
 
-class Pacman {
+class Player {
   static speed = 3;
   constructor({ position, velocity, color = "yellow" }) {
     this.position = position;
@@ -171,24 +169,24 @@ const ghosts = [
   }),
 ];
 
-const player1 = new Pacman({
+const player1 = new Player({
   position: {
     x: Boundary.width + Boundary.width / 2,
     y: Boundary.height + Boundary.height / 2,
   },
   velocity: {
-    x: Pacman.speed,
+    x: Player.speed,
     y: 0,
   },
 });
 
-const player2 = new Pacman({
+const player2 = new Player({
   position: {
     x: Boundary.width * 17 + Boundary.width / 2,
     y: Boundary.height + Boundary.height / 2,
   },
   velocity: {
-    x: -Pacman.speed,
+    x: -Player.speed,
     y: 0,
   },
   color: "purple",
@@ -217,469 +215,30 @@ won = false;
 winner = -1;
 
 const map = [
-  [
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    " ",
-    " ",
-    " ",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-  ],
-];
+  ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
+  ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','.','.','.','-','.','.','.','-','.','.','.','-','.','.','.','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','.','.','.','.','.','-',' ',' ',' ','-','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','.','-','.','.','.','.','.','.','.','.','.','.','.','-','.','.','-'],
+  ['-','-','.','-','.','-','.','-','-','-','-','-','.','-','.','-','.','-','-'],
+  ['-','.','.','.','.','-','.','.','.','-','.','.','.','-','.','.','.','.','-'],
+  ['-','.','-','-','-','-','-','-','.','-','.','-','-','-','-','-','-','.','-'],
+  ['-','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','-'],
+  ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
+
+]
 map.forEach((row, i) => {
   row.forEach((symbol, j) => {
     switch (symbol) {
@@ -703,16 +262,6 @@ map.forEach((row, i) => {
           })
         );
         break;
-      // case 'p':
-      // powerUps.push(
-      //     new PowerUp({
-      //         position:{
-      //             x: Boundary.width * j + Boundary.width / 2,
-      //             y: Boundary.height * i + Boundary.height / 2
-      //         }
-      //     })
-      // )
-      // break
     }
   });
 });
@@ -754,7 +303,6 @@ function animate() {
           x: Boundary.width * 4 + Boundary.width / 2,
           y: Boundary.height * 10 + Boundary.height / 2,
         };
-        // ghosts.splice(i, 1)
         player1score += 100;
         player1scoreEl.innerText = player1score;
       } else {
@@ -777,7 +325,6 @@ function animate() {
           x: Boundary.width * 14 + Boundary.width / 2,
           y: Boundary.height * 10 + Boundary.height / 2,
         };
-        // ghosts.splice(i, 1)
         player2score += 100;
         player2scoreEl.innerText = player2score;
       } else {
@@ -800,21 +347,6 @@ function animate() {
     const powerUp = powerUps[i];
     powerUp.draw();
 
-    // if(Math.hypot(
-    //     powerUp.position.x - player1.position.x,
-    //     powerUp.position.y - player1.position.y) < player1.radius + powerUp.radius){
-    //     powerUps.splice(i, 1)
-    //     score += 50
-    //     scoreEl.innerText = score
-
-    //     ghosts.forEach((ghost) => {
-    //         ghost.scared = true
-
-    //         setTimeout(() => {
-    //             ghost.scared = false
-    //         }, 5000)
-    //     })
-    // }
   }
 
   for (let i = pellets.length - 1; i > 0; i--) {
@@ -988,7 +520,7 @@ function controls() {
             ...player1,
             velocity: {
               x: 0,
-              y: -Pacman.speed,
+              y: -Player.speed,
             },
           },
           rectangle: boundary,
@@ -997,7 +529,7 @@ function controls() {
         player1.velocity.y = 0;
         break;
       } else {
-        player1.velocity.y = -Pacman.speed;
+        player1.velocity.y = -Player.speed;
       }
     }
   } else if (keys.ArrowDown && player1lastKey === "ArrowDown") {
@@ -1009,7 +541,7 @@ function controls() {
             ...player1,
             velocity: {
               x: 0,
-              y: Pacman.speed,
+              y: Player.speed,
             },
           },
           rectangle: boundary,
@@ -1018,7 +550,7 @@ function controls() {
         player1.velocity.y = 0;
         break;
       } else {
-        player1.velocity.y = Pacman.speed;
+        player1.velocity.y = Player.speed;
       }
     }
   } else if (keys.ArrowLeft && player1lastKey === "ArrowLeft") {
@@ -1029,7 +561,7 @@ function controls() {
           circle: {
             ...player1,
             velocity: {
-              x: -Pacman.speed,
+              x: -Player.speed,
               y: 0,
             },
           },
@@ -1039,7 +571,7 @@ function controls() {
         player1.velocity.x = 0;
         break;
       } else {
-        player1.velocity.x = -Pacman.speed;
+        player1.velocity.x = -Player.speed;
       }
     }
   } else if (keys.ArrowRight && player1lastKey === "ArrowRight") {
@@ -1050,7 +582,7 @@ function controls() {
           circle: {
             ...player1,
             velocity: {
-              x: Pacman.speed,
+              x: Player.speed,
               y: 0,
             },
           },
@@ -1060,7 +592,7 @@ function controls() {
         player1.velocity.x = 0;
         break;
       } else {
-        player1.velocity.x = Pacman.speed;
+        player1.velocity.x = Player.speed;
       }
     }
   } else if (keys.w && player2lastKey === "w") {
@@ -1072,7 +604,7 @@ function controls() {
             ...player2,
             velocity: {
               x: 0,
-              y: -Pacman.speed,
+              y: -Player.speed,
             },
           },
           rectangle: boundary,
@@ -1081,7 +613,7 @@ function controls() {
         player2.velocity.y = 0;
         break;
       } else {
-        player2.velocity.y = -Pacman.speed;
+        player2.velocity.y = -Player.speed;
       }
     }
   } else if (keys.s && player2lastKey === "s") {
@@ -1093,7 +625,7 @@ function controls() {
             ...player2,
             velocity: {
               x: 0,
-              y: Pacman.speed,
+              y: Player.speed,
             },
           },
           rectangle: boundary,
@@ -1102,7 +634,7 @@ function controls() {
         player2.velocity.y = 0;
         break;
       } else {
-        player2.velocity.y = Pacman.speed;
+        player2.velocity.y = Player.speed;
       }
     }
   } else if (keys.a && player2lastKey === "a") {
@@ -1113,7 +645,7 @@ function controls() {
           circle: {
             ...player2,
             velocity: {
-              x: -Pacman.speed,
+              x: -Player.speed,
               y: 0,
             },
           },
@@ -1123,7 +655,7 @@ function controls() {
         player2.velocity.x = 0;
         break;
       } else {
-        player2.velocity.x = -Pacman.speed;
+        player2.velocity.x = -Player.speed;
       }
     }
   } else if (keys.d && player2lastKey === "d") {
@@ -1134,7 +666,7 @@ function controls() {
           circle: {
             ...player2,
             velocity: {
-              x: Pacman.speed,
+              x: Player.speed,
               y: 0,
             },
           },
@@ -1144,7 +676,7 @@ function controls() {
         player2.velocity.x = 0;
         break;
       } else {
-        player2.velocity.x = Pacman.speed;
+        player2.velocity.x = Player.speed;
       }
     }
   }
@@ -1257,7 +789,6 @@ addEventListener("keyup", (event) => {
       break;
     case "Backspace":
       drawMainMenu();
-      // alert("Back to main menu")
       break;
     case "q":
     case "Q":

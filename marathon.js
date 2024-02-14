@@ -5,9 +5,7 @@ const scoreEl = document.getElementById("score");
 canvas.width = 20 * 30;
 canvas.height = 22 * 30 + 25;
 
-// random number 1 - 6
 const random = Math.floor(Math.random() * 6) + 1;
-// add background music {random}.mp3
 var audio = new Audio(
   "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
 );
@@ -26,7 +24,7 @@ class Boundary {
   }
 }
 
-class Pacman {
+class Player {
   static speed = 3;
   constructor({ position, velocity }) {
     this.position = position;
@@ -126,481 +124,43 @@ const ghosts = [];
 let over = false;
 let won = false;
 const map = [
-  [
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    " ",
-    " ",
-    " ",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-    ".",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    ".",
-    "-",
-  ],
-  [
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-  ],
-];
+  ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
+  ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','.','.','.','-','.','.','.','-','.','.','.','-','.','.','.','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','.','.','.','.','.','-',' ',' ',' ','-','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
+  ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
+  ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
+  ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
+  ['-','.','.','-','.','.','.','.','.','.','.','.','.','.','.','-','.','.','-'],
+  ['-','-','.','-','.','-','.','-','-','-','-','-','.','-','.','-','.','-','-'],
+  ['-','.','.','.','.','-','.','.','.','-','.','.','.','-','.','.','.','.','-'],
+  ['-','.','-','-','-','-','-','-','.','-','.','-','-','-','-','-','-','.','-'],
+  ['-','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','-'],
+  ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
+
+
+]
 
 let number_of_ghosts = 1;
 let lastKey = "";
 let score = 0;
 let stage = 1;
-const pacman = new Pacman({
+const player = new Player({
   position: {
     x: Boundary.width + Boundary.width / 2,
     y: Boundary.height + Boundary.height / 2,
   },
   velocity: {
-    x: Pacman.speed,
+    x: Player.speed,
     y: 0,
   },
 });
@@ -632,7 +192,7 @@ function initialize() {
     );
   }
 
-  pacman.position = {
+  player.position = {
     x: Boundary.width + Boundary.width / 2,
     y: Boundary.height + Boundary.height / 2,
   };
@@ -667,16 +227,6 @@ function initialize() {
             })
           );
           break;
-        // case 'p':
-        // powerUps.push(
-        //     new PowerUp({
-        //         position:{
-        //             x: Boundary.width * j + Boundary.width / 2,
-        //             y: Boundary.height * i + Boundary.height / 2
-        //         }
-        //     })
-        // )
-        // break
       }
     });
   });
@@ -709,19 +259,19 @@ function animate() {
       if (
         collide({
           circle: {
-            ...pacman,
+            ...player,
             velocity: {
               x: 0,
-              y: -Pacman.speed,
+              y: -Player.speed,
             },
           },
           rectangle: boundary,
         })
       ) {
-        pacman.velocity.y = 0;
+        player.velocity.y = 0;
         break;
       } else {
-        pacman.velocity.y = -Pacman.speed;
+        player.velocity.y = -Player.speed;
       }
     }
   } else if (keys.ArrowDown && lastKey === "ArrowDown") {
@@ -730,19 +280,19 @@ function animate() {
       if (
         collide({
           circle: {
-            ...pacman,
+            ...player,
             velocity: {
               x: 0,
-              y: Pacman.speed,
+              y: Player.speed,
             },
           },
           rectangle: boundary,
         })
       ) {
-        pacman.velocity.y = 0;
+        player.velocity.y = 0;
         break;
       } else {
-        pacman.velocity.y = Pacman.speed;
+        player.velocity.y = Player.speed;
       }
     }
   } else if (keys.ArrowLeft && lastKey === "ArrowLeft") {
@@ -751,19 +301,19 @@ function animate() {
       if (
         collide({
           circle: {
-            ...pacman,
+            ...player,
             velocity: {
-              x: -Pacman.speed,
+              x: -Player.speed,
               y: 0,
             },
           },
           rectangle: boundary,
         })
       ) {
-        pacman.velocity.x = 0;
+        player.velocity.x = 0;
         break;
       } else {
-        pacman.velocity.x = -Pacman.speed;
+        player.velocity.x = -Player.speed;
       }
     }
   } else if (keys.ArrowRight && lastKey === "ArrowRight") {
@@ -772,19 +322,19 @@ function animate() {
       if (
         collide({
           circle: {
-            ...pacman,
+            ...player,
             velocity: {
-              x: Pacman.speed,
+              x: Player.speed,
               y: 0,
             },
           },
           rectangle: boundary,
         })
       ) {
-        pacman.velocity.x = 0;
+        player.velocity.x = 0;
         break;
       } else {
-        pacman.velocity.x = Pacman.speed;
+        player.velocity.x = Player.speed;
       }
     }
   }
@@ -792,10 +342,10 @@ function animate() {
     const ghost = ghosts[i];
     if (
       Math.hypot(
-        ghost.position.x - pacman.position.x,
-        ghost.position.y - pacman.position.y
+        ghost.position.x - player.position.x,
+        ghost.position.y - player.position.y
       ) <
-      pacman.radius + ghost.radius
+      player.radius + ghost.radius
     ) {
       if (ghost.chaser == false) {
         ghost.chaser = true;
@@ -804,11 +354,7 @@ function animate() {
           x: Boundary.width * 14 + Boundary.width / 2,
           y: Boundary.height * 10 + Boundary.height / 2,
         };
-        // ghosts.splice(i, 1)
-        // score += 100
-        // scoreEl.innerText = score
       } else {
-        // cancelAnimationFrame(animationId);
         over = true;
         stage = 1;
         score = 0;
@@ -827,22 +373,6 @@ function animate() {
   for (let i = powerUps.length - 1; i >= 0; i--) {
     const powerUp = powerUps[i];
     powerUp.draw();
-
-    // if(Math.hypot(
-    //     powerUp.position.x - pacman.position.x,
-    //     powerUp.position.y - pacman.position.y) < pacman.radius + powerUp.radius){
-    //     powerUps.splice(i, 1)
-    //     score += 50
-    //     scoreEl.innerText = score
-
-    //     ghosts.forEach((ghost) => {
-    //         ghost.scared = true
-
-    //         setTimeout(() => {
-    //             ghost.scared = false
-    //         }, 5000)
-    //     })
-    // }
   }
 
   for (let i = pellets.length - 1; i > 0; i--) {
@@ -851,10 +381,10 @@ function animate() {
 
     if (
       Math.hypot(
-        pellet.position.x - pacman.position.x,
-        pellet.position.y - pacman.position.y
+        pellet.position.x - player.position.x,
+        pellet.position.y - player.position.y
       ) <
-        pacman.radius + pellet.radius &&
+        player.radius + pellet.radius &&
       number_of_ghosts <= 0
     ) {
       pellets.splice(i, 1);
@@ -868,15 +398,15 @@ function animate() {
 
     if (
       collide({
-        circle: pacman,
+        circle: player,
         rectangle: boundary,
       })
     ) {
-      pacman.velocity.y = 0;
-      pacman.velocity.x = 0;
+      player.velocity.y = 0;
+      player.velocity.x = 0;
     }
   });
-  pacman.update();
+  player.update();
 
   ghosts.forEach((ghost) => {
     ghost.update();
@@ -963,14 +493,14 @@ function animate() {
     }
   });
 
-  if (pacman.velocity.x > 0) {
-    pacman.rotation = 0;
-  } else if (pacman.velocity.x < 0) {
-    pacman.rotation = Math.PI;
-  } else if (pacman.velocity.y > 0) {
-    pacman.rotation = Math.PI / 2;
-  } else if (pacman.velocity.y < 0) {
-    pacman.rotation = (Math.PI * 3) / 2;
+  if (player.velocity.x > 0) {
+    player.rotation = 0;
+  } else if (player.velocity.x < 0) {
+    player.rotation = Math.PI;
+  } else if (player.velocity.y > 0) {
+    player.rotation = Math.PI / 2;
+  } else if (player.velocity.y < 0) {
+    player.rotation = (Math.PI * 3) / 2;
   }
 }
 animate();

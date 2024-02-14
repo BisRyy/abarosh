@@ -5,10 +5,10 @@ const scoreEl = document.getElementById("score");
 canvas.width = 50 * 30;
 canvas.height = 22 * 30 + 25;
 
-// random number 1 - 6
 const random = Math.floor(Math.random() * 6) + 1;
-// add background music {random}.mp3
-var audio = new Audio("https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a");
+var audio = new Audio(
+  "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
+);
 
 class Boundary {
   static width = 30;
@@ -25,7 +25,7 @@ class Boundary {
   }
 }
 
-class Pacman {
+class Player {
   static speed = 3;
   constructor({ position, velocity, color = "yellow" }) {
     this.position = position;
@@ -157,24 +157,24 @@ for (let i = 0; i < number_of_ghosts / 2; i++) {
   );
 }
 
-const player1 = new Pacman({
+const player1 = new Player({
   position: {
     x: Boundary.width + Boundary.width / 2,
     y: Boundary.height + Boundary.height / 2,
   },
   velocity: {
-    x: Pacman.speed,
+    x: Player.speed,
     y: 0,
   },
 });
 
-const player2 = new Pacman({
+const player2 = new Player({
   position: {
     x: Boundary.width * 48 + Boundary.width / 2,
     y: Boundary.height + Boundary.height / 2,
   },
   velocity: {
-    x: -Pacman.speed,
+    x: -Player.speed,
     y: 0,
   },
   color: "purple",
@@ -197,9 +197,8 @@ let score = 0;
 let player2lastKey = "";
 let player2score = 0;
 
-over = false
-won = false
-
+over = false;
+won = false;
 
 const map = [
   ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
@@ -238,26 +237,33 @@ const blacks = [[8,42],[8,43],[8,44],[8,45],[8,46],[8,47],
               [11,42],[11,47],
               [12,42],[12,43],[12,44],[12,45],[12,46],[12,47],]
 
-function check(i, j, colors){
-  for (let x = 0; x < colors.length; x++ ){
-      if (i == colors[x][0] && j == colors[x][1])
-          return true
+function check(i, j, colors) {
+  for (let x = 0; x < colors.length; x++) {
+    if (i == colors[x][0] && j == colors[x][1]) return true;
   }
-  return false
+  return false;
 }
-
 
 map.forEach((row, i) => {
   row.forEach((symbol, j) => {
     switch (symbol) {
       case "-":
         boundaries.push(
-          new Boundary({color: check(i, j, reds) ? "black" : check(i, j, blacks) ? "red" : "blue",
+          new Boundary({
+            color: check(i, j, reds)
+              ? "black"
+              : check(i, j, blacks)
+              ? "red"
+              : "blue",
             position: {
               x: Boundary.width * j,
               y: Boundary.height * i,
             },
-            color: check(i, j, reds) ? "black" : check(i, j, blacks) ? "red" : "blue",
+            color: check(i, j, reds)
+              ? "black"
+              : check(i, j, blacks)
+              ? "red"
+              : "blue",
           })
         );
         break;
@@ -271,7 +277,7 @@ map.forEach((row, i) => {
           })
         );
         break;
-      case 'p':
+      case "p":
         powerUps.push(
           new PowerUp({
             position: {
@@ -280,7 +286,7 @@ map.forEach((row, i) => {
             },
           })
         );
-      break
+        break;
     }
   });
 });
@@ -322,7 +328,6 @@ function animate() {
         };
         ghost.chaser = true;
         number_of_ghosts -= 1;
-        // ghosts.splice(i, 1)
         score += 100;
         scoreEl.innerText = score;
       } else {
@@ -351,7 +356,6 @@ function animate() {
         };
         ghost.chaser = true;
         number_of_ghosts -= 1;
-        // ghosts.splice(i, 1)
         score += 100;
         scoreEl.innerText = score;
       } else {
@@ -371,13 +375,13 @@ function animate() {
 
   if (pellets.length === 1) {
     cancelAnimationFrame(animationId);
-    won = true
+    won = true;
     gameWon();
   }
 
   if (player1.prisoned && player2.prisoned) {
     cancelAnimationFrame(animationId);
-    over = true
+    over = true;
     gameOver();
   }
 
@@ -385,28 +389,38 @@ function animate() {
     const powerUp = powerUps[i];
     powerUp.draw();
 
-    if(Math.hypot(
+    if (
+      Math.hypot(
         powerUp.position.x - player1.position.x,
-        powerUp.position.y - player1.position.y) < player1.radius + powerUp.radius && player2.prisoned){
-        powerUps.splice(i, 1)
-        
-          player2.prisoned = false;
-          player2.position = {
-            x: Boundary.width * 48 + Boundary.width / 2,
-            y: Boundary.height + Boundary.height / 2,
-          };
+        powerUp.position.y - player1.position.y
+      ) <
+        player1.radius + powerUp.radius &&
+      player2.prisoned
+    ) {
+      powerUps.splice(i, 1);
+
+      player2.prisoned = false;
+      player2.position = {
+        x: Boundary.width * 48 + Boundary.width / 2,
+        y: Boundary.height + Boundary.height / 2,
+      };
     }
 
-    if(Math.hypot(
+    if (
+      Math.hypot(
         powerUp.position.x - player2.position.x,
-        powerUp.position.y - player2.position.y) < player2.radius + powerUp.radius && player1.prisoned){
-        powerUps.splice(i, 1)
-        
-          player1.prisoned = false;
-          player1.position = {
-            x: Boundary.width + Boundary.width / 2,
-            y: Boundary.height + Boundary.height / 2,
-          };
+        powerUp.position.y - player2.position.y
+      ) <
+        player2.radius + powerUp.radius &&
+      player1.prisoned
+    ) {
+      powerUps.splice(i, 1);
+
+      player1.prisoned = false;
+      player1.position = {
+        x: Boundary.width + Boundary.width / 2,
+        y: Boundary.height + Boundary.height / 2,
+      };
     }
   }
 
@@ -583,7 +597,7 @@ function controls() {
             ...player1,
             velocity: {
               x: 0,
-              y: -Pacman.speed,
+              y: -Player.speed,
             },
           },
           rectangle: boundary,
@@ -592,7 +606,7 @@ function controls() {
         player1.velocity.y = 0;
         break;
       } else {
-        player1.velocity.y = -Pacman.speed;
+        player1.velocity.y = -Player.speed;
       }
     }
   } else if (keys.ArrowDown && player1lastKey === "ArrowDown") {
@@ -604,7 +618,7 @@ function controls() {
             ...player1,
             velocity: {
               x: 0,
-              y: Pacman.speed,
+              y: Player.speed,
             },
           },
           rectangle: boundary,
@@ -613,7 +627,7 @@ function controls() {
         player1.velocity.y = 0;
         break;
       } else {
-        player1.velocity.y = Pacman.speed;
+        player1.velocity.y = Player.speed;
       }
     }
   } else if (keys.ArrowLeft && player1lastKey === "ArrowLeft") {
@@ -624,7 +638,7 @@ function controls() {
           circle: {
             ...player1,
             velocity: {
-              x: -Pacman.speed,
+              x: -Player.speed,
               y: 0,
             },
           },
@@ -634,7 +648,7 @@ function controls() {
         player1.velocity.x = 0;
         break;
       } else {
-        player1.velocity.x = -Pacman.speed;
+        player1.velocity.x = -Player.speed;
       }
     }
   } else if (keys.ArrowRight && player1lastKey === "ArrowRight") {
@@ -645,7 +659,7 @@ function controls() {
           circle: {
             ...player1,
             velocity: {
-              x: Pacman.speed,
+              x: Player.speed,
               y: 0,
             },
           },
@@ -655,7 +669,7 @@ function controls() {
         player1.velocity.x = 0;
         break;
       } else {
-        player1.velocity.x = Pacman.speed;
+        player1.velocity.x = Player.speed;
       }
     }
   } else if (keys.w && player2lastKey === "w") {
@@ -667,7 +681,7 @@ function controls() {
             ...player2,
             velocity: {
               x: 0,
-              y: -Pacman.speed,
+              y: -Player.speed,
             },
           },
           rectangle: boundary,
@@ -676,7 +690,7 @@ function controls() {
         player2.velocity.y = 0;
         break;
       } else {
-        player2.velocity.y = -Pacman.speed;
+        player2.velocity.y = -Player.speed;
       }
     }
   } else if (keys.s && player2lastKey === "s") {
@@ -688,7 +702,7 @@ function controls() {
             ...player2,
             velocity: {
               x: 0,
-              y: Pacman.speed,
+              y: Player.speed,
             },
           },
           rectangle: boundary,
@@ -697,7 +711,7 @@ function controls() {
         player2.velocity.y = 0;
         break;
       } else {
-        player2.velocity.y = Pacman.speed;
+        player2.velocity.y = Player.speed;
       }
     }
   } else if (keys.a && player2lastKey === "a") {
@@ -708,7 +722,7 @@ function controls() {
           circle: {
             ...player2,
             velocity: {
-              x: -Pacman.speed,
+              x: -Player.speed,
               y: 0,
             },
           },
@@ -718,7 +732,7 @@ function controls() {
         player2.velocity.x = 0;
         break;
       } else {
-        player2.velocity.x = -Pacman.speed;
+        player2.velocity.x = -Player.speed;
       }
     }
   } else if (keys.d && player2lastKey === "d") {
@@ -729,7 +743,7 @@ function controls() {
           circle: {
             ...player2,
             velocity: {
-              x: Pacman.speed,
+              x: Player.speed,
               y: 0,
             },
           },
@@ -739,7 +753,7 @@ function controls() {
         player2.velocity.x = 0;
         break;
       } else {
-        player2.velocity.x = Pacman.speed;
+        player2.velocity.x = Player.speed;
       }
     }
   }
@@ -780,54 +794,52 @@ addEventListener("keydown", (event) => {
       keys.d = true;
       player2lastKey = "d";
       break;
-      case "p":
-        case "P":
-          cancelAnimationFrame(animationId);
-          break;
-        case "m":
-        case "M":
-        case "Escape":
-          drawMainMenu();
-          break;
-        case "Enter":
-        case "c":
-        case "C":
-            if (won){
-              won = false
-              cancelAnimationFrame(animationId);
-              initialize()
-              animate()
-            } else if(!over) {
-                cancelAnimationFrame(animationId);
-                animate();
-            }else{
-                window.location.reload()
-            }
-            break;
-        case "r":
-        case "R":
-            if (over) {
-                window.location.reload();
-            }else if(confirm("Are you sure you want to restart?")){
-                window.location.reload();
-            }
-          break;
-        case "N":
-        case "n":
-            if (!over){
-                if(confirm("Are you sure you want to restart?"))
-                    window.location.reload()
-            }
-          break;
-        case "Backspace":
-          drawMainMenu();
-          // alert("Back to main menu")
-          break;
-        case "q":
-        case "Q":
-          quitGame();
-          break;
-    
+    case "p":
+    case "P":
+      cancelAnimationFrame(animationId);
+      break;
+    case "m":
+    case "M":
+    case "Escape":
+      drawMainMenu();
+      break;
+    case "Enter":
+    case "c":
+    case "C":
+      if (won) {
+        won = false;
+        cancelAnimationFrame(animationId);
+        initialize();
+        animate();
+      } else if (!over) {
+        cancelAnimationFrame(animationId);
+        animate();
+      } else {
+        window.location.reload();
+      }
+      break;
+    case "r":
+    case "R":
+      if (over) {
+        window.location.reload();
+      } else if (confirm("Are you sure you want to restart?")) {
+        window.location.reload();
+      }
+      break;
+    case "N":
+    case "n":
+      if (!over) {
+        if (confirm("Are you sure you want to restart?"))
+          window.location.reload();
+      }
+      break;
+    case "Backspace":
+      drawMainMenu();
+      break;
+    case "q":
+    case "Q":
+      quitGame();
+      break;
   }
   if (player1.prisoned) {
     player1.velocity = {

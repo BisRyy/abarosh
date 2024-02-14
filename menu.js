@@ -4,7 +4,14 @@ const ctx = canvas.getContext("2d");
 canvas.width = 20 * 30;
 canvas.height = 22 * 30 + 25;
 
-const menuOptions = ["Survival", "Marathon", "Multiplayer", "Team", "Help", "Quit"];
+const menuOptions = [
+  "Survival",
+  "Marathon",
+  "Multiplayer",
+  "Team",
+  "Help",
+  "Quit",
+];
 let selectedOption = 0;
 let side = 0;
 
@@ -12,7 +19,6 @@ var logo = new Image();
 var kuncho = new Image();
 var police = new Image();
 
-// Set the source of the image
 logo.src = "./assets/title_image/Abarosh.png";
 kuncho.src =
   `./assets/sprites/kuncho_sprite/kuncho-` +
@@ -23,7 +29,6 @@ police.src =
   (selectedOption + 3).toString() +
   `.png.png`;
 
-// When the image has loaded, draw it onto the canvas
 police.onload = function () {
   ctx.drawImage(
     police,
@@ -53,9 +58,9 @@ kuncho.onload = function () {
     130
   );
 };
-// random number 1 - 6
+
 const random = Math.floor(Math.random() * 6) + 1;
-// add background music {random}.mp3
+
 var audio = new Audio(
   "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
 );
@@ -78,13 +83,21 @@ function drawMainMenu() {
   window.addEventListener("keydown", handleMainMenuKeyDown);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#fff";
-  ctx.font = "40px CustomFont";
 
   menuOptions.forEach((option, index) => {
     if (index === selectedOption) {
       ctx.fillStyle = "#ff0";
     } else {
       ctx.fillStyle = "#fff";
+    }
+
+    if (index === 0) {
+      ctx.font = "60px CustomFont";
+      let title = "Abarosh";
+      ctx.fillText(title, canvas.width / 2 + 40, canvas.height / 2 - 100);
+      ctx.font = "40px CustomFont";
+      title = "አባሮሽ";
+      ctx.fillText(title, canvas.width / 2 - 200, canvas.height / 2 - 100);
     }
     ctx.fillText(
       option,
@@ -120,7 +133,6 @@ function handleMainMenuKeyDown(event) {
     `.png.png`;
   logo.src = "./assets/title_image/Abarosh.png";
 
-  // When the image has loaded, draw it onto the canvas
   police.onload = function () {
     ctx.drawImage(
       police,
@@ -168,7 +180,7 @@ function selectMenuOption(optionIndex) {
       window.location.href = "./team.html";
       break;
     case 4:
-      window.open("https://github.com/bisryy/abarosh", "_blank");
+      window.open("https://github.com/bisryy/abarosh?tab=readme-ov-file#game-modes", "_blank");
       break;
     case 5:
       quitGame();
