@@ -5,8 +5,8 @@ const player2scoreEl = document.getElementById("player2");
 
 canvas.width = 20 * 30;
 canvas.height = window.innerHeight - 65;
-// rectangle(0,0,canvas.width,canvas.height,"blue")
-// rectangle(50,50,canvas.width-50,canvas.height-50,"blue")
+
+
 
 class Boundary {
   static width = 30;
@@ -207,6 +207,9 @@ let player2lastKey = "";
 let player2score = 0;
 
 let number_of_ghosts = 0;
+over = false;
+won = false;
+winner = -1;
 
 const map = [
   ["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-",],
@@ -311,7 +314,9 @@ function animate() {
         player1scoreEl.innerText = player1score;
       } else {
         cancelAnimationFrame(animationId);
-        alert("Game Over. PURPLE Wins!");
+        over = true;
+        winner = 0;
+        gameOver();
       }
     } else if (
       Math.hypot(
@@ -332,14 +337,17 @@ function animate() {
         player2scoreEl.innerText = player2score;
       } else {
         cancelAnimationFrame(animationId);
-        alert("Game Over. YELLOW Wins!");
+        over = true;
+        winner = 1;
+        gameOver();
       }
     }
   }
 
   if (pellets.length === 1) {
     const winner = player1score > player2score ? "Player 1" : "Player 2";
-    alert(`Game Over. ${winner} Wins!`);
+    gameWon(`${winner} Wins!`);
+    won = true;
     cancelAnimationFrame(animationId);
   }
 
@@ -761,5 +769,136 @@ addEventListener("keyup", (event) => {
     case "d":
       keys.d = false;
       break;
+
+    case "p":
+    case "P":
+      cancelAnimationFrame(animationId);
+      break;
+    case "m":
+    case "M":
+    case "Escape":
+      drawMainMenu();
+      break;
+    case "Enter":
+    case "c":
+    case "C":
+      if (won) {
+        won = false;
+        cancelAnimationFrame(animationId);
+        initialize();
+        animate();
+      } else if (!over) {
+        cancelAnimationFrame(animationId);
+        animate();
+      } else {
+        window.location.reload();
+      }
+      break;
+    case "r":
+    case "R":
+      if (over) {
+        window.location.reload();
+      } else if (confirm("Are you sure you want to restart?")) {
+        window.location.reload();
+      }
+      break;
+    case "N":
+    case "n":
+      if (!over) {
+        if (confirm("Are you sure you want to restart?"))
+          window.location.reload();
+      }
+      break;
+    case "Backspace":
+      drawMainMenu();
+      // alert("Back to main menu")
+      break;
+    case "q":
+    case "Q":
+      quitGame();
+      break;
   }
 });
+
+const menuOptions = ["C - Continue", "R - Restart", "Q - Quit"];
+let selectedOption = 0;
+
+function drawMainMenu() {
+  cancelAnimationFrame(animationId);
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "#ff0";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
+}
+
+function quitGame() {
+  if (!over) {
+    if (confirm("Are you sure you want to quit?")) {
+      window.location.href = "./index.html";
+    }
+  } else {
+    window.location.href = "./index.html";
+  }
+}
+
+function gameOver() {
+  cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(gameOver);
+
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 90, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+
+  const menuOptions = ["Game Over.", "", "R - Restart", "Q - Quit"];
+  menuOptions[1] = winner == 1 ? "Yellow Wins!" : "Purple Wins!";
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "red";
+    } else if (index == 1) {
+      context.fillStyle = winner == 1 ? "yellow" : "purple";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + index * 50 - 50
+    );
+  });
+}
+
+function gameWon(winner) {
+  cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(gameWon);
+
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+
+  const menuOptions = [winner, "R - Restart", "Q - Quit"];
+
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "green";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
+}

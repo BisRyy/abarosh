@@ -119,6 +119,8 @@ const ghosts = [];
 
 let number_of_ghosts = 5;
 let over = false;
+let won = false;
+
 
 for (let i = 0; i < number_of_ghosts; i++) {
   ghosts.push(
@@ -543,42 +545,59 @@ function handleGameKeyDown(event) {
       keys.ArrowRight = true;
       lastKey = "ArrowRight";
       break;
-    case "p":
-    case "P":
-      cancelAnimationFrame(animationId);
-      break;
-    case "Escape":
-      drawMainMenu();
-      break;
-    case "Enter":
-    case "r":
-    case "R":
-      if (over) {
-        window.location.href = "./single.html";
-      } else {
-        cancelAnimationFrame(animationId);
-        animate();
-      }
-      break;
-    case "N":
-    case "n":
-      window.location.href = "./index.html";
-      break;
-    case "Backspace":
-      drawMainMenu();
-      // alert("Back to main menu")
-      break;
-    case "q":
-    case "Q":
-      quitGame();
-      break;
+      case "p":
+        case "P":
+          cancelAnimationFrame(animationId);
+          break;
+        case "m":
+        case "M":
+        case "Escape":
+          drawMainMenu();
+          break;
+        case "Enter":
+        case "c":
+        case "C":
+            if (won){
+              won = false
+              cancelAnimationFrame(animationId);
+              initialize()
+              animate()
+            } else if(!over) {
+                cancelAnimationFrame(animationId);
+                animate();
+            }else{
+                window.location.reload()
+            }
+            break;
+        case "r":
+        case "R":
+            if (over) {
+                window.location.reload();
+            }else if(confirm("Are you sure you want to restart?")){
+                window.location.reload();
+            }
+          break;
+        case "N":
+        case "n":
+            if (!over){
+                if(confirm("Are you sure you want to restart?"))
+                    window.location.reload()
+            }
+          break;
+        case "Backspace":
+          drawMainMenu();
+          // alert("Back to main menu")
+          break;
+        case "q":
+        case "Q":
+          quitGame();
+          break;
   }
 }
 addEventListener("keydown", handleGameKeyDown);
 
 addEventListener("keyup", handleGameKeyUp);
 
-const menuOptions = ["Resume", "Restart", "Quit"];
 let selectedOption = 0;
 
 function drawMainMenu() {
@@ -586,6 +605,7 @@ function drawMainMenu() {
   context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
   context.fillStyle = "#fff";
   context.font = "30px Arial";
+  const menuOptions = ["C - Continue", "R - Restart", "Q - Quit"];
 
   menuOptions.forEach((option, index) => {
     if (index === selectedOption) {
@@ -595,53 +615,12 @@ function drawMainMenu() {
     }
     context.fillText(
       option,
-      canvas.width / 2 - 80,
+      canvas.width / 2 - 100,
       canvas.height / 2 + index * 50 - 40
     );
   });
 }
 
-function handleMainMenuKeyDown(event) {
-  switch (event.key) {
-    case "ArrowUp":
-      selectedOption =
-        (selectedOption - 1 + menuOptions.length) % menuOptions.length;
-      break;
-    case "ArrowDown":
-      selectedOption = (selectedOption + 1) % menuOptions.length;
-      break;
-    case "Enter":
-      selectMenuOption(selectedOption);
-      break;
-  }
-  drawMainMenu();
-}
-
-function selectMenuOption(optionIndex) {
-  switch (optionIndex) {
-    case 0:
-      animate();
-      break;
-    case 1:
-      window.location.href = "./marathon.html";
-      break;
-    case 2:
-      window.location.href = "./multi.html";
-      break;
-    case 3:
-      quitGame();
-      break;
-  }
-}
-
-function startGame() {
-  window.location.href = "./index.html";
-}
-
-function showOptions() {
-  alert("Showing options!");
-  // Add your options display logic here
-}
 
 function quitGame() {
   if (!over) {
@@ -671,7 +650,7 @@ function gameOver() {
     }
     context.fillText(
       option,
-      canvas.width / 2 - 80,
+      canvas.width / 2 - 100,
       canvas.height / 2 + index * 50 - 40
     );
   });
@@ -695,7 +674,7 @@ function gameWon() {
     }
     context.fillText(
       option,
-      canvas.width / 2 - 80,
+      canvas.width / 2 - 100,
       canvas.height / 2 + index * 50 - 40
     );
   });

@@ -178,6 +178,9 @@ let score = 0;
 let player2lastKey = "";
 let player2score = 0;
 
+over = false
+won = false
+
 
 const map = [
   ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
@@ -348,15 +351,15 @@ function animate() {
   }
 
   if (pellets.length === 1) {
-    alert("Game Over. All Pellets are Eaten!");
     cancelAnimationFrame(animationId);
-    window.location.href = "./index.html";
+    won = true
+    gameWon();
   }
 
   if (player1.prisoned && player2.prisoned) {
-    alert("Game Over. All Players are Prisoned!");
     cancelAnimationFrame(animationId);
-    window.location.href = "./index.html";
+    over = true
+    gameOver();
   }
 
   for (let i = powerUps.length - 1; i >= 0; i--) {
@@ -808,5 +811,133 @@ addEventListener("keyup", (event) => {
     case "d":
       keys.d = false;
       break;
+    case "p":
+    case "P":
+      cancelAnimationFrame(animationId);
+      break;
+    case "m":
+    case "M":
+    case "Escape":
+      drawMainMenu();
+      break;
+    case "Enter":
+    case "c":
+    case "C":
+        if (won){
+          won = false
+          cancelAnimationFrame(animationId);
+          initialize()
+          animate()
+        } else if(!over) {
+            cancelAnimationFrame(animationId);
+            animate();
+        }else{
+            window.location.reload()
+        }
+        break;
+    case "r":
+    case "R":
+        if (over) {
+            window.location.reload();
+        }else if(confirm("Are you sure you want to restart?")){
+            window.location.reload();
+        }
+      break;
+    case "N":
+    case "n":
+        if (!over){
+            if(confirm("Are you sure you want to restart?"))
+                window.location.reload()
+        }
+      break;
+    case "Backspace":
+      drawMainMenu();
+      // alert("Back to main menu")
+      break;
+    case "q":
+    case "Q":
+      quitGame();
+      break;
   }
 });
+
+let selectedOption = 0;
+
+function drawMainMenu() {
+  cancelAnimationFrame(animationId);
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+  
+  const menuOptions = ["C - Continue", "R - Restart", "Q - Quit"];
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "#ff0";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
+}
+
+function quitGame() {
+  if (!over) {
+    if (confirm("Are you sure you want to quit?")) {
+      window.location.href = "./index.html";
+    }
+  } else {
+    window.location.href = "./index.html";
+  }
+}
+
+function gameOver() {
+  cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(gameOver);
+
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+
+  const menuOptions = ["Game Over", "R - Restart", "Q - Quit"];
+
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "red";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
+}
+
+function gameWon() {
+  cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(gameWon);
+
+  context.clearRect(canvas.width / 2 - 120, canvas.height / 2 - 80, 200, 200);
+  context.fillStyle = "#fff";
+  context.font = "30px Arial";
+
+  const menuOptions = ["Team Won", "R - Restart", "Q - Quit"];
+
+  menuOptions.forEach((option, index) => {
+    if (index === selectedOption) {
+      context.fillStyle = "green";
+    } else {
+      context.fillStyle = "#fff";
+    }
+    context.fillText(
+      option,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + index * 50 - 40
+    );
+  });
+}

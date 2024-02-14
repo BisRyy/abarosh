@@ -4,8 +4,8 @@ const scoreEl = document.getElementById("score");
 
 canvas.width = 20 * 30;
 canvas.height = window.innerHeight - 65;
-// rectangle(0,0,canvas.width,canvas.height,"blue")
-// rectangle(50,50,canvas.width-50,canvas.height-50,"blue")
+
+
 
 class Boundary {
   static width = 30;
@@ -643,13 +643,6 @@ function drawMainMenu() {
   });
 }
 
-
-
-
-
-
-
-
 function quitGame() {
   if (!over) {
     if (confirm("Are you sure you want to quit?")) {
@@ -678,7 +671,7 @@ function gameOver() {
     }
     context.fillText(
       option,
-      canvas.width / 2 - 80,
+      canvas.width / 2 - 100,
       canvas.height / 2 + index * 50 - 40
     );
   });
@@ -702,7 +695,7 @@ function gameWon() {
     }
     context.fillText(
       option,
-      canvas.width / 2 - 80,
+      canvas.width / 2 - 100,
       canvas.height / 2 + index * 50 - 40
     );
   });
