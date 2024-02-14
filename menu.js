@@ -4,8 +4,49 @@ const ctx = canvas.getContext("2d");
 canvas.width = 20 * 30;
 canvas.height = window.innerHeight - 65;
 
-const menuOptions = ["Survival", "Marathon", "Multiplayer", "Quit"];
+const menuOptions = ["Survival", "Marathon", "Multiplayer", "Team", "Quit"];
 let selectedOption = 0;
+let side = 0;
+
+var logo = new Image();
+var kuncho = new Image();
+var police = new Image();
+
+// Set the source of the image
+logo.src = "./assets/title_image/Abarosh.png";
+kuncho.src =
+  `./assets/sprites/kuncho_sprite/kuncho-` +
+  (selectedOption + 3).toString() +
+  `.png.png`;
+police.src =
+  `./assets/sprites/Police_sprite/Police-` +
+  (selectedOption + 3).toString() +
+  `.png.png`;
+
+// When the image has loaded, draw it onto the canvas
+police.onload = function () {
+  ctx.drawImage(
+    police,
+    canvas.width / 2 - 150,
+    canvas.height / 2 + 200,
+    130,
+    130
+  );
+};
+
+logo.onload = function () {
+  ctx.drawImage(logo, canvas.width / 2 - 150, canvas.height / 2 - 200, 200, 200);
+}
+
+kuncho.onload = function () {
+  ctx.drawImage(
+    kuncho,
+    canvas.width / 2 - 100,
+    canvas.height / 2 + 200,
+    130,
+    130
+  );
+};
 
 function drawMainMenu() {
   window.addEventListener("keydown", handleMainMenuKeyDown);
@@ -22,7 +63,7 @@ function drawMainMenu() {
     ctx.fillText(
       option,
       canvas.width / 2 - 100,
-      canvas.height / 2 + index * 50
+      canvas.height / 2 + index * 40
     );
   });
 }
@@ -40,6 +81,43 @@ function handleMainMenuKeyDown(event) {
       selectMenuOption(selectedOption);
       break;
   }
+
+  side += 1;
+  side %= 8;
+  kuncho.src =
+    `./assets/sprites/kuncho_sprite/kuncho-` +
+    (side + 2).toString() +
+    `.png.png`;
+  police.src =
+    `./assets/sprites/Police_sprite/Police-` +
+    (side + 2).toString() +
+    `.png.png`;
+  logo.src = "./assets/title_image/Abarosh.png";
+
+  // When the image has loaded, draw it onto the canvas
+  police.onload = function () {
+    ctx.drawImage(
+      police,
+      canvas.width / 2 - 150,
+      canvas.height / 2 + 200,
+      130,
+      130
+    );
+  };
+
+  logo.onload = function () {
+    ctx.drawImage(logo, canvas.width / 2 - 150, canvas.height / 2 - 200, 200, 200);
+  }
+
+  kuncho.onload = function () {
+    ctx.drawImage(
+      kuncho,
+      canvas.width / 2 - 100,
+      canvas.height / 2 + 150,
+      130,
+      130
+    );
+  };
   drawMainMenu();
 }
 
@@ -55,6 +133,9 @@ function selectMenuOption(optionIndex) {
       window.location.href = "./multi.html";
       break;
     case 3:
+      window.location.href = "./team.html";
+    break;
+    case 4:
       quitGame();
       break;
   }
@@ -64,14 +145,10 @@ function startGame() {
   window.location.href = "./index.html";
 }
 
-function showOptions() {
-  alert("Showing options!");
-  // Add your options display logic here
-}
+
 
 function quitGame() {
-  alert("Quitting the game!");
-  // Add your game quitting logic here
+  window.location.replace("http://www.youtube.com/watch?v=dQw4w9WgXcQ");
 }
 
 drawMainMenu();

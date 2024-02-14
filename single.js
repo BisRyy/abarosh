@@ -4,8 +4,6 @@ const scoreEl = document.getElementById("score");
 
 canvas.width = 20 * 30;
 canvas.height = window.innerHeight - 65;
-// rectangle(0,0,canvas.width,canvas.height,"blue")
-// rectangle(50,50,canvas.width-50,canvas.height-50,"blue")
 
 class Boundary {
   static width = 30;
