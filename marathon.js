@@ -3,14 +3,14 @@ const context = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 
 canvas.width = 20 * 30;
-canvas.height = window.innerHeight - 65;
+canvas.height = 22 * 30 + 25;
 
 // random number 1 - 6
 const random = Math.floor(Math.random() * 6) + 1;
 // add background music {random}.mp3
-var audio = new Audio("/assets/audio/" + random + ".m4a");
-
-
+var audio = new Audio(
+  "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
+);
 
 class Boundary {
   static width = 30;
@@ -126,124 +126,563 @@ const ghosts = [];
 let over = false;
 let won = false;
 const map = [
-    ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
-    ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
-    ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
-    ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
-    ['-','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','-'],
-    ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
-    ['-','.','.','.','.','-','.','.','.','-','.','.','.','-','.','.','.','.','-'],
-    ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
-    ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
-    ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
-    ['-','.','.','.','.','.','.','-',' ',' ',' ','-','.','.','.','.','.','.','-'],
-    ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
-    ['-','.','-','-','.','-','.','.','.','.','.','.','.','-','.','-','-','.','-'],
-    ['-','.','-','-','.','-','.','-','-','-','-','-','.','-','.','-','-','.','-'],
-    ['-','.','.','.','.','.','.','.','.','-','.','.','.','.','.','.','.','.','-'],
-    ['-','.','-','-','.','-','-','-','.','-','.','-','-','-','.','-','-','.','-'],
-    ['-','.','.','-','.','.','.','.','.','.','.','.','.','.','.','-','.','.','-'],
-    ['-','-','.','-','.','-','.','-','-','-','-','-','.','-','.','-','.','-','-'],
-    ['-','.','.','.','.','-','.','.','.','-','.','.','.','-','.','.','.','.','-'],
-    ['-','.','-','-','-','-','-','-','.','-','.','-','-','-','-','-','-','.','-'],
-    ['-','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','-'],
-    ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
+  [
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    " ",
+    " ",
+    " ",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+    ".",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    ".",
+    "-",
+  ],
+  [
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+    "-",
+  ],
+];
 
-
-]
-
-let number_of_ghosts = 1
-let lastKey = ''
-let score = 0
-let stage = 1
+let number_of_ghosts = 1;
+let lastKey = "";
+let score = 0;
+let stage = 1;
 const pacman = new Pacman({
-    position:{
-        x: Boundary.width + Boundary.width / 2,
-        y: Boundary.height + Boundary.height / 2
-    },
-    velocity:{
-        x: Pacman.speed,
-        y: 0
-    }
-})
+  position: {
+    x: Boundary.width + Boundary.width / 2,
+    y: Boundary.height + Boundary.height / 2,
+  },
+  velocity: {
+    x: Pacman.speed,
+    y: 0,
+  },
+});
 
 const keys = {
-    ArrowUp: false,
-    ArrowDown: false,
-    ArrowLeft: false,
-    ArrowRight: false
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false,
+};
+
+function initialize() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  ghosts.splice(0, ghosts.length);
+  number_of_ghosts = stage;
+  for (let i = 0; i < number_of_ghosts; i++) {
+    ghosts.push(
+      new Ghost({
+        position: {
+          x: Boundary.width * 6 + Boundary.width / 2,
+          y: Boundary.height * 20 + Boundary.height / 2,
+        },
+        velocity: {
+          x: Ghost.speed,
+          y: 0,
+        },
+        color: "green",
+      })
+    );
+  }
+
+  pacman.position = {
+    x: Boundary.width + Boundary.width / 2,
+    y: Boundary.height + Boundary.height / 2,
+  };
+
+  keys.ArrowUp = false;
+  keys.ArrowDown = false;
+  keys.ArrowLeft = false;
+  keys.ArrowRight = false;
+  over = false;
+  won = false;
+
+  map.forEach((row, i) => {
+    row.forEach((symbol, j) => {
+      switch (symbol) {
+        case "-":
+          boundaries.push(
+            new Boundary({
+              position: {
+                x: Boundary.width * j,
+                y: Boundary.height * i,
+              },
+            })
+          );
+          break;
+        case ".":
+          pellets.push(
+            new Pellets({
+              position: {
+                x: Boundary.width * j + Boundary.width / 2,
+                y: Boundary.height * i + Boundary.height / 2,
+              },
+            })
+          );
+          break;
+        // case 'p':
+        // powerUps.push(
+        //     new PowerUp({
+        //         position:{
+        //             x: Boundary.width * j + Boundary.width / 2,
+        //             y: Boundary.height * i + Boundary.height / 2
+        //         }
+        //     })
+        // )
+        // break
+      }
+    });
+  });
 }
 
-function initialize(){
-    context.clearRect(0,0,canvas.width,canvas.height)
-    ghosts.splice(0, ghosts.length)
-    number_of_ghosts = stage
-    for(let i = 0; i < number_of_ghosts; i++){
-        ghosts.push(new Ghost({
-            position:{
-                x: Boundary.width * 6 + Boundary.width / 2,
-                y: Boundary.height * 20 + Boundary.height / 2
-            },
-            velocity:{
-                x: Ghost.speed,
-                y: 0
-            },
-            color: "green"
-        } ))
-    }
-    
-    pacman.position = {
-        x: Boundary.width + Boundary.width / 2,
-        y: Boundary.height + Boundary.height / 2
-    }
-
-    keys.ArrowUp = false
-    keys.ArrowDown = false
-    keys.ArrowLeft = false
-    keys.ArrowRight = false
-    over = false
-    won = false
-    
-    
-    map.forEach((row, i) => {
-        row.forEach((symbol, j) => {
-            switch(symbol){
-                case '-':
-                    boundaries.push(
-                        new Boundary({
-                            position:{
-                                x: Boundary.width * j,
-                                y: Boundary.height * i
-                            }
-                        })
-                    )
-                    break
-                case '.':
-                    pellets.push(
-                        new Pellets({
-                            position:{
-                                x: Boundary.width * j + Boundary.width / 2,
-                                y: Boundary.height * i + Boundary.height / 2
-                            }
-                        })
-                    )
-                    break
-                // case 'p':
-                // powerUps.push(
-                //     new PowerUp({
-                //         position:{
-                //             x: Boundary.width * j + Boundary.width / 2,
-                //             y: Boundary.height * i + Boundary.height / 2
-                //         }
-                //     })
-                // )
-                // break
-            }
-        })
-    })
-}
-
-initialize()
+initialize();
 
 function collide({ circle, rectangle }) {
   const padding = Boundary.width / 2 - circle.radius - 1;
@@ -371,8 +810,8 @@ function animate() {
       } else {
         // cancelAnimationFrame(animationId);
         over = true;
-        stage = 1
-        score = 0
+        stage = 1;
+        score = 0;
         gameOver();
       }
     }
@@ -380,8 +819,8 @@ function animate() {
 
   if (pellets.length === 1) {
     cancelAnimationFrame(animationId);
-    stage += 1
-    won = true
+    stage += 1;
+    won = true;
     gameWon();
   }
 
@@ -584,32 +1023,32 @@ function handleGameKeyDown(event) {
     case "Enter":
     case "c":
     case "C":
-        if (won){
-          won = false
-          cancelAnimationFrame(animationId);
-          initialize()
-          animate()
-        } else if(!over) {
-            cancelAnimationFrame(animationId);
-            animate();
-        }else{
-            window.location.reload()
-        }
-        break;
+      if (won) {
+        won = false;
+        cancelAnimationFrame(animationId);
+        initialize();
+        animate();
+      } else if (!over) {
+        cancelAnimationFrame(animationId);
+        animate();
+      } else {
+        window.location.reload();
+      }
+      break;
     case "r":
     case "R":
-        if (over) {
-            window.location.reload();
-        }else if(confirm("Are you sure you want to restart?")){
-            window.location.reload();
-        }
+      if (over) {
+        window.location.reload();
+      } else if (confirm("Are you sure you want to restart?")) {
+        window.location.reload();
+      }
       break;
     case "N":
     case "n":
-        if (!over){
-            if(confirm("Are you sure you want to restart?"))
-                window.location.reload()
-        }
+      if (!over) {
+        if (confirm("Are you sure you want to restart?"))
+          window.location.reload();
+      }
       break;
     case "Backspace":
       drawMainMenu();

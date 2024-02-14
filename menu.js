@@ -2,7 +2,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = 20 * 30;
-canvas.height = window.innerHeight - 65;
+canvas.height = 22 * 30 + 25;
 
 const menuOptions = ["Survival", "Marathon", "Multiplayer", "Team", "Quit"];
 let selectedOption = 0;
@@ -56,7 +56,9 @@ kuncho.onload = function () {
 // random number 1 - 6
 const random = Math.floor(Math.random() * 6) + 1;
 // add background music {random}.mp3
-var audio = new Audio("/assets/audio/" + random + ".m4a");
+var audio = new Audio(
+  "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
+);
 
 const customFont = new FontFace(
   "CustomFont",
