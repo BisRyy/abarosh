@@ -5,6 +5,11 @@ const scoreEl = document.getElementById("score");
 canvas.width = 20 * 30;
 canvas.height = window.innerHeight - 65;
 
+// random number 1 - 6
+const random = Math.floor(Math.random() * 6) + 1;
+// add background music {random}.mp3
+var audio = new Audio("/assets/audio/" + random + ".m4a");
+
 
 
 class Boundary {
@@ -615,6 +620,7 @@ function handleGameKeyDown(event) {
       quitGame();
       break;
   }
+  audio.play();
 }
 addEventListener("keydown", handleGameKeyDown);
 

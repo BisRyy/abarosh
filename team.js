@@ -5,6 +5,11 @@ const scoreEl = document.getElementById("score");
 canvas.width = 50 * 30;
 canvas.height = window.innerHeight - 65;
 
+// random number 1 - 6
+const random = Math.floor(Math.random() * 6) + 1;
+// add background music {random}.mp3
+var audio = new Audio("/assets/audio/" + random + ".m4a");
+
 class Boundary {
   static width = 30;
   static height = 30;
@@ -761,6 +766,54 @@ addEventListener("keydown", (event) => {
       keys.d = true;
       player2lastKey = "d";
       break;
+      case "p":
+        case "P":
+          cancelAnimationFrame(animationId);
+          break;
+        case "m":
+        case "M":
+        case "Escape":
+          drawMainMenu();
+          break;
+        case "Enter":
+        case "c":
+        case "C":
+            if (won){
+              won = false
+              cancelAnimationFrame(animationId);
+              initialize()
+              animate()
+            } else if(!over) {
+                cancelAnimationFrame(animationId);
+                animate();
+            }else{
+                window.location.reload()
+            }
+            break;
+        case "r":
+        case "R":
+            if (over) {
+                window.location.reload();
+            }else if(confirm("Are you sure you want to restart?")){
+                window.location.reload();
+            }
+          break;
+        case "N":
+        case "n":
+            if (!over){
+                if(confirm("Are you sure you want to restart?"))
+                    window.location.reload()
+            }
+          break;
+        case "Backspace":
+          drawMainMenu();
+          // alert("Back to main menu")
+          break;
+        case "q":
+        case "Q":
+          quitGame();
+          break;
+    
   }
   if (player1.prisoned) {
     player1.velocity = {
@@ -783,6 +836,7 @@ addEventListener("keydown", (event) => {
     keys.a = false;
     keys.d = false;
   }
+  audio.play();
 });
 
 addEventListener("keyup", (event) => {
@@ -810,53 +864,6 @@ addEventListener("keyup", (event) => {
       break;
     case "d":
       keys.d = false;
-      break;
-    case "p":
-    case "P":
-      cancelAnimationFrame(animationId);
-      break;
-    case "m":
-    case "M":
-    case "Escape":
-      drawMainMenu();
-      break;
-    case "Enter":
-    case "c":
-    case "C":
-        if (won){
-          won = false
-          cancelAnimationFrame(animationId);
-          initialize()
-          animate()
-        } else if(!over) {
-            cancelAnimationFrame(animationId);
-            animate();
-        }else{
-            window.location.reload()
-        }
-        break;
-    case "r":
-    case "R":
-        if (over) {
-            window.location.reload();
-        }else if(confirm("Are you sure you want to restart?")){
-            window.location.reload();
-        }
-      break;
-    case "N":
-    case "n":
-        if (!over){
-            if(confirm("Are you sure you want to restart?"))
-                window.location.reload()
-        }
-      break;
-    case "Backspace":
-      drawMainMenu();
-      // alert("Back to main menu")
-      break;
-    case "q":
-    case "Q":
-      quitGame();
       break;
   }
 });

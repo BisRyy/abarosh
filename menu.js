@@ -35,8 +35,14 @@ police.onload = function () {
 };
 
 logo.onload = function () {
-  ctx.drawImage(logo, canvas.width / 2 - 150, canvas.height / 2 - 200, 200, 200);
-}
+  ctx.drawImage(
+    logo,
+    canvas.width / 2 - 150,
+    canvas.height / 2 - 200,
+    200,
+    200
+  );
+};
 
 kuncho.onload = function () {
   ctx.drawImage(
@@ -47,12 +53,30 @@ kuncho.onload = function () {
     130
   );
 };
+// random number 1 - 6
+const random = Math.floor(Math.random() * 6) + 1;
+// add background music {random}.mp3
+var audio = new Audio("/assets/audio/" + random + ".m4a");
+
+const customFont = new FontFace(
+  "CustomFont",
+  "url(assets/fonts/Pixeltype.ttf)"
+);
+
+customFont
+  .load()
+  .then(function (loadedFont) {
+    document.fonts.add(loadedFont);
+  })
+  .catch(function (error) {
+    console.log("Font loading failed: " + error);
+  });
 
 function drawMainMenu() {
   window.addEventListener("keydown", handleMainMenuKeyDown);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#fff";
-  ctx.font = "30px Arial";
+  ctx.font = "40px CustomFont";
 
   menuOptions.forEach((option, index) => {
     if (index === selectedOption) {
@@ -81,7 +105,7 @@ function handleMainMenuKeyDown(event) {
       selectMenuOption(selectedOption);
       break;
   }
-
+  audio.play();
   side += 1;
   side %= 8;
   kuncho.src =
@@ -106,8 +130,14 @@ function handleMainMenuKeyDown(event) {
   };
 
   logo.onload = function () {
-    ctx.drawImage(logo, canvas.width / 2 - 150, canvas.height / 2 - 200, 200, 200);
-  }
+    ctx.drawImage(
+      logo,
+      canvas.width / 2 - 150,
+      canvas.height / 2 - 200,
+      200,
+      200
+    );
+  };
 
   kuncho.onload = function () {
     ctx.drawImage(
@@ -134,7 +164,7 @@ function selectMenuOption(optionIndex) {
       break;
     case 3:
       window.location.href = "./team.html";
-    break;
+      break;
     case 4:
       quitGame();
       break;
@@ -144,8 +174,6 @@ function selectMenuOption(optionIndex) {
 function startGame() {
   window.location.href = "./index.html";
 }
-
-
 
 function quitGame() {
   window.location.replace("http://www.youtube.com/watch?v=dQw4w9WgXcQ");

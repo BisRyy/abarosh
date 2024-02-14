@@ -6,6 +6,10 @@ const player2scoreEl = document.getElementById("player2");
 canvas.width = 20 * 30;
 canvas.height = window.innerHeight - 65;
 
+// random number 1 - 6
+const random = Math.floor(Math.random() * 6) + 1;
+// add background music {random}.mp3
+var audio = new Audio("/assets/audio/" + random + ".m4a");
 
 
 class Boundary {
@@ -741,6 +745,7 @@ addEventListener("keydown", (event) => {
       player2lastKey = "d";
       break;
   }
+  audio.play();
 });
 
 addEventListener("keyup", (event) => {
