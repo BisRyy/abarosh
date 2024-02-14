@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 20 * 30;
 canvas.height = 22 * 30 + 25;
 
-const menuOptions = ["Survival", "Marathon", "Multiplayer", "Team", "Quit"];
+const menuOptions = ["Survival", "Marathon", "Multiplayer", "Team", "Help", "Quit"];
 let selectedOption = 0;
 let side = 0;
 
@@ -89,7 +89,7 @@ function drawMainMenu() {
     ctx.fillText(
       option,
       canvas.width / 2 - 100,
-      canvas.height / 2 + index * 40
+      canvas.height / 2 + index * 40 - 20
     );
   });
 }
@@ -168,6 +168,9 @@ function selectMenuOption(optionIndex) {
       window.location.href = "./team.html";
       break;
     case 4:
+      window.open("https://github.com/bisryy/abarosh", "_blank");
+      break;
+    case 5:
       quitGame();
       break;
   }
