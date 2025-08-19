@@ -62,7 +62,7 @@ kuncho.onload = function () {
 const random = Math.floor(Math.random() * 6) + 1;
 
 var audio = new Audio(
-  "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
+  "/assets/audio/" + random + ".m4a"
 );
 
 const customFont = new FontFace(
