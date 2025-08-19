@@ -7,7 +7,7 @@ canvas.height = 22 * 30 + 25;
 
 const random = Math.floor(Math.random() * 6) + 1;
 var audio = new Audio(
-  "https://bisry.thearc.tech/abarosh/assets/audio/" + random + ".m4a"
+  "/assets/audio/" + random + ".m4a"
 );
 
 class Boundary {
